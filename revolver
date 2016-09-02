@@ -1,0 +1,175 @@
+#!/usr/bin/env zsh
+
+###
+# The main revolver process, which contains the loop
+###
+function _revolver_process() {
+  local dir statefile state msg pid="$1" spinner_index=0
+
+  # Find the directory and load the statefile
+  dir=${REVOLVER_DIR:-"${ZDOTDIR:-$HOME}/.revolver"}
+  statefile="$dir/$pid"
+
+  # Create a never-ending loop
+  while [[ 1=1 ]]; do
+    # If the statefile has been removed, exit the script
+    # to prevent it from being orphaned
+    if [[ ! -f $statefile ]]; then
+      echo 'Failed in process'
+      echo '\033[0;31mRevolver process could not be found\033[0;m'
+      exit 1
+    fi
+
+    # Load the current state, and parse it to get
+    # the message to be displayed
+    state=($(cat $statefile))
+
+    msg="${(@)state:1}"
+
+    # Output the current spinner frame, and add a
+    # slight delay before the next one
+    _revolver_spin
+    sleep 0.1
+  done
+}
+
+###
+# Output the spinner itself, along with a message
+###
+function _revolver_spin() {
+  local dir statefile state pid frames
+
+  # The frames that, when animated, will make up
+  # our spinning indicator
+  frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+
+  # ZSH arrays start at 1, so we need to bump the index if it's 0
+  if [[ $spinner_index -eq 0 ]]; then
+    spinner_index+=1
+  fi
+
+  # Calculate the screen width
+  lim=$(tput cols)
+
+  # Echo the current frame and message, and overwrite
+  # the rest of the line with white space
+  msg="\033[0;38;5;242m${msg}\033[0;m"
+  printf '%*.*b' ${#msg} $lim "${frames[$spinner_index]} $msg$(printf '%0.1s' " "{1..$lim})"
+
+  # Return to the beginning of the line
+  echo -n "\r"
+
+  # Set the spinner index to the next frame
+  spinner_index=$(( $(( $spinner_index + 1 )) % ${#frames} ))
+}
+
+###
+# Stop the current spinner process
+###
+function _revolver_stop() {
+  local dir statefile state pid
+
+  # Find the directory and load the statefile
+  dir=${REVOLVER_DIR:-"${ZDOTDIR:-$HOME}/.revolver"}
+  statefile="$dir/$PPID"
+
+  # If the statefile does not exist, raise an error.
+  # The spinner process itself performs the same check
+  # and kills itself, so it should never be orphaned
+  if [[ ! -f $statefile ]]; then
+    echo '\033[0;31mRevolver process could not be found\033[0;m'
+    exit 1
+  fi
+
+  # Get the current state, and parse it to find the PID
+  # of the spinner process
+  state=($(cat $statefile))
+  pid="$state[1]"
+
+  # If a PID has been found, kill the process
+  [[ ! -z $pid ]] && kill "$pid" > /dev/null
+  unset pid
+
+  # Remove the statefile
+  rm $statefile
+}
+
+###
+# Update the message being displayed
+function _revolver_update() {
+  local dir statefile state pid msg="$1"
+
+  # Find the directory and load the statefile
+  dir=${REVOLVER_DIR:-"${ZDOTDIR:-$HOME}/.revolver"}
+  statefile="$dir/$PPID"
+
+  # If the statefile does not exist, raise an error.
+  # The spinner process itself performs the same check
+  # and kills itself, so it should never be orphaned
+  if [[ ! -f $statefile ]]; then
+    echo '\033[0;31mRevolver process could not be found\033[0;m'
+    exit 1
+  fi
+
+  # Get the current state, and parse it to find the PID
+  # of the spinner process
+  state=($(cat $statefile))
+  pid="$state[1]"
+
+  # Echo the new message to the statefile, to be
+  # picked up by the spinner process
+  echo "$pid $msg" >! $statefile
+}
+
+###
+# Create a new spinner with the specified message
+###
+function _revolver_start() {
+  local dir statefile msg="$1"
+
+  # Find the directory and create it if it doesn't exist
+  dir=${REVOLVER_DIR:-"${ZDOTDIR:-$HOME}/.revolver"}
+  if [[ ! -d $dir ]]; then
+    mkdir -p $dir
+  fi
+
+  # Create the filename for the statefile
+  statefile="$dir/$PPID"
+
+  touch $statefile
+  if [[ ! -f $statefile ]]; then
+    echo '\033[0;31mRevolver process could not create state file\033[0;m'
+    echo "Check that the directory $dir is writable"
+    exit 1
+  fi
+
+  # Start the spinner process in the background
+  _revolver_process $PPID &!
+
+  # Save the current state to the statefile
+  echo "$! $msg" >! $statefile
+}
+
+###
+# Handle command input
+###
+function _revolver() {
+  # Get the context from the first parameter
+  local ctx="$1"
+
+  case $ctx in
+    start|update|stop)
+      # Check if a valid command is passed,
+      # and if so, run it
+      _revolver_${ctx} "${(@)@:2}"
+      ;;
+    *)
+      # If the context is not recognised,
+      # throw an error and exit
+      echo "Command $ctx is not recognised"
+      exit 1
+      ;;
+  esac
+}
+
+_revolver "$@"
