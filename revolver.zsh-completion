@@ -1,0 +1,33 @@
+#compdef revolver
+
+_commands=(
+  'start:start the spinner process'
+  'update:update the message'
+  'stop:stop the spinner process'
+)
+
+###
+# Complete revolver commands
+###
+function _revolver_commands() {
+  _describe -t commands 'commands' _commands "$@"
+}
+
+###
+# Revolver completion
+###
+function _revolver() {
+  typeset -A opt_args
+  local context state line curcontext="$curcontext"
+
+  # Set option arguments
+  _arguments -A \
+    '(-h --help)'{-h,--help}'[show help text and exit]' \
+    '(-v --version)'{-v,--version}'[show version information and exit]'
+
+  # Set log level arguments
+  _arguments \
+    '1: :_revolver_commands'
+}
+
+_revolver "$@"

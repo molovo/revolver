@@ -1,6 +1,23 @@
 #!/usr/bin/env zsh
 
 ###
+# Output usage information and exit
+###
+function _revolver_usage() {
+  echo "\033[0;33mUsage:\033[0;m"
+  echo "  revolver [options] <command> <message>"
+  echo
+  echo "\033[0;33mOptions:\033[0;m"
+  echo "  -h, --help         Output help text and exit"
+  echo "  -v, --version      Output version information and exit"
+  echo
+  echo "\033[0;33mCommands:\033[0;m"
+  echo "  start <message>    Start the spinner"
+  echo "  update <message>   Update the message"
+  echo "  stop               Stop the spinner"
+}
+
+###
 # The main revolver process, which contains the loop
 ###
 function _revolver_process() {
@@ -155,7 +172,24 @@ function _revolver_start() {
 ###
 function _revolver() {
   # Get the context from the first parameter
-  local ctx="$1"
+  local help version ctx="$1"
+
+  # Parse CLI options
+  zparseopts -D \
+    h=help -help=help \
+    v=version -version=version
+
+  # Output usage information and exit
+  if [[ $help ]]; then
+    _revolver_usage
+    exit 0
+  fi
+
+  # Output version information and exit
+  if [[ $version ]]; then
+    echo '0.1.1'
+    exit 0
+  fi
 
   case $ctx in
     start|update|stop)
