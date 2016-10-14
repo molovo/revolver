@@ -32,8 +32,15 @@ function _revolver_process() {
     # If the statefile has been removed, exit the script
     # to prevent it from being orphaned
     if [[ ! -f $statefile ]]; then
-      echo 'Failed in process'
-      echo '\033[0;31mRevolver process could not be found\033[0;m'
+      exit 1
+    fi
+
+    # Check for the existence of the parent process
+    kill -s 0 $pid 2&>/dev/null
+
+    # If process doesn't exist, exit the script
+    # to prevent it from being orphaned
+    if [[ $? -ne 0 ]]; then
       exit 1
     fi
 
