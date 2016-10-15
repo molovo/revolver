@@ -263,14 +263,13 @@ function _revolver() {
     s:=style -style:=style
 
   # Output usage information and exit
-  if [[ $help ]]; then
+  if [[ -n $help ]]; then
     _revolver_usage
     exit 0
   fi
 
   # Output version information and exit
-  if [[ $version ]]; then
-    echo '0.1.1'
+  if [[ -n $version ]]; then
     exit 0
   fi
 
