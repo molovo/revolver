@@ -103,7 +103,7 @@ function _revolver_process() {
     fi
 
     # Check for the existence of the parent process
-    kill -s 0 $pid 2&>/dev/null
+    $(kill -s 0 $pid 2&>/dev/null)
 
     # If process doesn't exist, exit the script
     # to prevent it from being orphaned
