@@ -75,6 +75,7 @@ function _revolver_usage() {
   echo "  start <message>    Start the spinner"
   echo "  update <message>   Update the message"
   echo "  stop               Stop the spinner"
+  echo "  demo               Display an demo of each style"
 }
 
 ###
@@ -238,6 +239,17 @@ function _revolver_start() {
 }
 
 ###
+# Demonstrate each of the included spinner styles
+###
+function _revolver_demo() {
+  for style in "${(@k)_revolver_spinners[@]}"; do
+    ./revolver --style $style start $style
+    sleep 2
+    ./revolver stop
+  done
+}
+
+###
 # Handle command input
 ###
 function _revolver() {
@@ -277,7 +289,7 @@ function _revolver() {
   fi
 
   case $ctx in
-    start|update|stop)
+    start|update|stop|demo)
       # Check if a valid command is passed,
       # and if so, run it
       _revolver_${ctx} "${(@)@:2}"
