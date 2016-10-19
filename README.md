@@ -32,6 +32,16 @@ revolver update 'A different message'
 revolver stop
 ```
 
+## Styles
+
+Revolver comes with a `revolver demo` command which demonstrates each of the
+included spinner styles. Once you've found one you like, select it using the
+`--style` option.
+
+```sh
+revolver --style 'bouncingBall' 'The spinner message'
+```
+
 ## License
 
 Copyright (c) 2016 James Dinsdale <hi@molovo.co> (molovo.co)
