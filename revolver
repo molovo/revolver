@@ -243,9 +243,9 @@ function _revolver_start() {
 ###
 function _revolver_demo() {
   for style in "${(@k)_revolver_spinners[@]}"; do
-    ./revolver --style $style start $style
+    revolver --style $style start $style
     sleep 2
-    ./revolver stop
+    revolver stop
   done
 }
 
