@@ -2,6 +2,8 @@
 
 A progress spinner for ZSH scripts
 
+[![asciicast](https://asciinema.org/a/ex8z3z6d5m7uv4buww0o2qeq2.png)](https://asciinema.org/a/ex8z3z6d5m7uv4buww0o2qeq2)
+
 ## Installation
 
 ### [Zulu](https://github.com/zulu-zsh/zulu)
