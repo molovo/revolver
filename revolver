@@ -95,7 +95,7 @@ function _revolver_process() {
   shift frames
 
   # Create a never-ending loop
-  while [[ 1=1 ]]; do
+  while [[ 1 -eq 1 ]]; do
     # If the statefile has been removed, exit the script
     # to prevent it from being orphaned
     if [[ ! -f $statefile ]]; then
