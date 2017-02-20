@@ -12,6 +12,14 @@ A progress spinner for ZSH scripts
 zulu install revolver
 ```
 
+### zplug
+
+```sh
+zplug "molovo/revolver", \
+  as:command, \
+  use:revolver
+```
+
 ### Manual
 
 ```sh
