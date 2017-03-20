@@ -4,7 +4,7 @@ _commands=(
   'start:start the spinner process'
   'update:update the message'
   'stop:stop the spinner process'
-  'demo:display an demo of each style'
+  'demo:display a demo of each style'
 )
 
 ###
