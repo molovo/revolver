@@ -138,6 +138,10 @@ function _revolver_spin() {
   # Calculate the screen width
   lim=$(tput cols)
 
+  # Clear the line and move the cursor to the start
+  printf ' %.0s' {1..$lim}
+  echo -n "\r"
+
   # Echo the current frame and message, and overwrite
   # the rest of the line with white space
   msg="\033[0;38;5;242m${msg}\033[0;m"
@@ -174,6 +178,10 @@ function _revolver_stop() {
   state=($(cat $statefile))
   pid="$state[1]"
 
+  # Clear the line and move the cursor to the start
+  printf ' %.0s' {1..$(tput cols)}
+  echo -n "\r"
+
   # If a PID has been found, kill the process
   [[ ! -z $pid ]] && kill "$pid" > /dev/null
   unset pid
@@ -203,6 +211,10 @@ function _revolver_update() {
   # of the spinner process
   state=($(cat $statefile))
   pid="$state[1]"
+
+  # Clear the line and move the cursor to the start
+  printf ' %.0s' {1..$(tput cols)}
+  echo -n "\r"
 
   # Echo the new message to the statefile, to be
   # picked up by the spinner process
