@@ -59,7 +59,7 @@ function update_homebrew() {
 
   git add ./Formula/revolver.rb
   git commit -m "Update homebrew formula"
-  git push --quiet deploy master >/dev/null 2>&1
+  git push --quiet origin master >/dev/null 2>&1
 }
 
 update_homebrew "$@"
