@@ -54,6 +54,9 @@ function update_homebrew() {
   mv tmpfile deployment/Formula/revolver.rb
 
   cd deployment
+  git config user.email 'hi@molovo.co'
+  git config user.name 'James Dinsdale'
+
   git add ./Formula/revolver.rb
   git commit -m "Update homebrew formula"
   git push --quiet deploy master >/dev/null 2>&1
