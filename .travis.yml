@@ -1,0 +1,13 @@
+language: generic
+addons:
+  apt:
+    packages:
+      - zsh
+deploy:
+  provider: script
+  script: scripts/update-homebrew.zsh $TRAVIS_TAG
+  on:
+    tags: true
+env:
+  global:
+    secure: XO16NzSnPrd8O1ef1I+UhJSaAJrYhniOmGhr4/t5Kjw5wC3MBFJhLyE45yXPKdtUn+wWWWM+LdgiU0+/qEAM6Gt6CkuvUrPCmDdhW3XqYuUAP9Xl3KWdxgqmuApfZbmmdUjQDXxJoMGfik3ftIEaF6L4sEpYjR2kvf0TOulorskfIuGZs1QislNZQIvryN2o3iPc3pS5Hv7CfxaqoftYiAgJPHvr6dcmZ/rtCcbYrQhBMUsQ/+BbemkhUz3GQdGkYBYlb1PZZ9qeuJAWvHzZQ+W10ZYk+Hw5hSaR+MgUTrk888GeSpnabluvv9pgnKb3+Y8mXFjdTQ/0x+wVcc9LRyWWi72/MSg0Y2zsh5ZWUb7RS3iGqnwNpAFMkJ/E/WKmppjBwaZr3zBIWASfhrarhnphazmiybTkv2s0H1siyv9b1eF/EoyWk2p1xAzHUgd/mFT6lWrvYa9X+KTlWn+U8lrh7xFmEGhL9sFDBiIBBl1ooR3yBIVuwDR4j5jtZvSXt9g5M+Xq7s+OMFTJeVj6rnZ2ylco3hVEiAhGWvqfAHD8i9ltAmI7qA/g+uIjr045pcE2N4PZyYjKkvvChXUZqyS5CmzjHWV9E3kOz4cWi6xX4jQ/SwyNmVhft0co4BmRye40QykpAYe7HhuxZuHsEwCAtO8P1LdC1em49Xp64Z8=
