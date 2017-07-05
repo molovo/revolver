@@ -20,6 +20,13 @@ zplug "molovo/revolver", \
   use:revolver
 ```
 
+### [Homebrew](http://brew.sh)
+
+```sh
+brew tap molovo/revolver https://github.com/molovo/revolver
+brew install revolver
+```
+
 ### Manual
 
 ```sh
