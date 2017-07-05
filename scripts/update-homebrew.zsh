@@ -16,6 +16,8 @@ function update_homebrew() {
     exit 1
   fi
 
+  git clone https://${GH_TOKEN}@github.com/molovo/homebrew-revolver.git deployment >/dev/null 2>&1
+
   for cmd in $sumcmds; do
     if type -p $cmd >/dev/null 2>&1; then
       sumcmd=$cmd
@@ -33,7 +35,7 @@ function update_homebrew() {
   local sum=${sumparts[1]}
   local oldIFS=$IFS
   IFS=$'\n'
-  local -a formula; formula=($(cat ./Formula/revolver.rb))
+  local -a formula; formula=($(cat ./deployment/Formula/revolver.rb))
   for line in "${(@f)formula}"; do
     if [[ "$line" =~ '^([ ]+)?url \".*\"' ]]; then
       echo "  url \"$url\"" >> tmpfile
@@ -49,7 +51,6 @@ function update_homebrew() {
   done
   IFS=$oldIFS
 
-  git clone https://${GH_TOKEN}@github.com/molovo/revolver.git deployment >/dev/null 2>&1
 
   mv tmpfile deployment/Formula/revolver.rb
 
@@ -58,7 +59,7 @@ function update_homebrew() {
   git config user.name 'James Dinsdale'
 
   git add ./Formula/revolver.rb
-  git commit -m "Update homebrew formula"
+  git commit -m "Update homebrew formula for version $version"
   git push --quiet origin master >/dev/null 2>&1
 }
 
