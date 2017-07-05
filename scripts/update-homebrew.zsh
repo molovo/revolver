@@ -33,7 +33,7 @@ function update_homebrew() {
   local sum=${sumparts[1]}
   local oldIFS=$IFS
   IFS=$'\n'
-  local formula=($(cat ./Formula/revolver.rb))
+  local -a formula; formula=($(cat ./Formula/revolver.rb))
   for line in "${(@f)formula}"; do
     if [[ "$line" =~ '^([ ]+)?url \".*\"' ]]; then
       echo "  url \"$url\"" >> tmpfile
