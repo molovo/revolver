@@ -49,9 +49,11 @@ function update_homebrew() {
   done
   IFS=$oldIFS
 
-  mv tmpfile ./Formula/revolver.rb
+  git clone https://${GH_TOKEN}@github.com/molovo/revolver.git deployment >/dev/null 2>&1
 
-  git remote add deploy https://${GH_TOKEN}@github.com/molovo/revolver.git >/dev/null 2>&1
+  mv tmpfile deployment/Formula/revolver.rb
+
+  cd deployment
   git add ./Formula/revolver.rb
   git commit -m "Update homebrew formula"
   git push --quiet deploy master >/dev/null 2>&1
