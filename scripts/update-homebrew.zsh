@@ -29,8 +29,8 @@ function update_homebrew() {
   fi
 
   wget $url
-  local sum=($($sumcmd $version.tar.gz))
-  sum=${sum[1]}
+  local -a sumparts; sumparts=($($sumcmd $version.tar.gz))
+  local sum=${sumparts[1]}
   local oldIFS=$IFS
   IFS=$'\n'
   local formula=($(cat ./Formula/revolver.rb))
