@@ -27,7 +27,7 @@ _revolver_spinners=(
   'growHorizontal' '0.12 ▏ ▎ ▍ ▌ ▋ ▊ ▉ ▊ ▋ ▌ ▍ ▎'
   'balloon' '0.14 " " "." "o" "O" "@" "*" " "'
   'balloon2' '0.12 . o O ° O o .'
-  'noise' '▓ ▒ ░'
+  'noise' '0.14 ▓ ▒ ░'
   'bounce' '0.1 ⠁ ⠂ ⠄ ⠂'
   'boxBounce' '0.12 ▖ ▘ ▝ ▗'
   'boxBounce2' '0.1 ▌ ▀ ▐ ▄'
