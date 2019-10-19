@@ -1,0 +1,60 @@
+#compdef revolver
+
+emulate -LR zsh
+setopt extendedglob warncreateglobal typesetsilent noshortloops rcquotes
+
+local curcontext="$curcontext" state state_descr line ret=1
+
+typeset -a commands
+commands=(
+    start:'start the revolver process, i.e.: start showing the indicator'
+    stop:'stop the revolver process, i.e.: stop the display of the indicator'
+    update:'update the message shown next to the indicator'
+    demo:'show the demo of the available indicators (end with the `stop'' command)'
+)
+
+typeset -a roptions
+roptions=(
+    "-h":"Output help text and exit"
+    "-v":"Output version information and exit"
+    "-s":"Set the spinner style"
+    "-i":"Make the cursor invisible during the operation"
+    "--help":"Output help text and exit"
+    "--version":"Output version information and exit"
+    "--style":"Set the spinner style"
+    "--hide-cursor":"Make the cursor invisible during the operation"
+)
+
+_arguments -C \
+    '1: :->command'\
+    '*: :->argument' && ret=0
+
+case $state in
+    command)
+        # By using `options' instead of `opts' one gets only options
+        # completed by default
+        _alternative 'commands:command: _describe "revolver command" commands' \
+            'opts:option: _describe "revolver options" roptions' &&
+                ret=0
+        ;;
+    argument)
+        case $words[2] in
+            start)
+                _message "Enter an optional message and hit enter to start the revolver process" && ret=0
+                ;;
+            update)
+                _message "Enter a message and hit enter to update the indicator" && ret=0
+                ;;
+            stop)
+                _message "Hit enter to stop the revolver process" && ret=0
+                ;;
+            demo)
+                _message "Hit enter to start the revolver demo" && ret=0
+                ;;
+            *)
+                ret=1
+                ;;
+        esac
+esac
+
+return "$ret"
