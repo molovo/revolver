@@ -64,9 +64,9 @@ You can hide the cursor during revolver operation, to do this pass option `-i`
 or `--hide-cursor` for the opening `revolver` invocation:
 
 ```sh
-revolver start -i "Your awesome message"
+revolver -i start "Your awesome message"
 # OR
-revolver start --hide-cursor "Your awesome message"
+revolver --hide-cursor start "Your awesome message"
 # ...
 # ...
 ```
