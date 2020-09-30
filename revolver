@@ -70,6 +70,7 @@ function _revolver_usage() {
   echo "  -h, --help         Output help text and exit"
   echo "  -v, --version      Output version information and exit"
   echo "  -s, --style        Set the spinner style"
+  echo "  -i, --hide-cursor  Make the cursor invisible during the operation"
   echo
   echo "\033[0;33mCommands:\033[0;m"
   echo "  start <message>    Start the spinner"
@@ -82,7 +83,10 @@ function _revolver_usage() {
 # The main revolver process, which contains the loop
 ###
 function _revolver_process() {
+  setopt localoptions localtraps
   local dir statefile state msg pid="$1" spinner_index=0
+
+  trap '[[ -n $invisible ]] && tput cnorm; exit' TERM INT QUIT HUP EXIT
 
   # Find the directory and load the statefile
   dir=${REVOLVER_DIR:-"${ZDOTDIR:-$HOME}/.revolver"}
@@ -93,6 +97,8 @@ function _revolver_process() {
   frames=(${(@z)_revolver_spinners[$style]})
   interval=${(@z)frames[1]}
   shift frames
+
+  [[ -n $invisible ]] && tput civis
 
   # Create a never-ending loop
   while [[ 1 -eq 1 ]]; do
@@ -108,6 +114,7 @@ function _revolver_process() {
     # If process doesn't exist, exit the script
     # to prevent it from being orphaned
     if [[ $? -ne 0 ]]; then
+      [[ -n $invisible ]] && tput cnorm
       exit 1
     fi
 
@@ -122,6 +129,8 @@ function _revolver_process() {
     _revolver_spin
     sleep ${interval:-"0.1"}
   done
+
+  [[ -n $invisible ]] && tput cnorm
 }
 
 ###
@@ -255,9 +264,12 @@ function _revolver_start() {
 ###
 function _revolver_demo() {
   for style in "${(@k)_revolver_spinners[@]}"; do
-    revolver --style $style start $style
+    revolver -i --style $style start $style
     sleep 2
     revolver stop
+    # Give time for the previous revolver to
+    # unhide the cursor at exit
+    LANG=C sleep 0.1
   done
 }
 
@@ -266,13 +278,14 @@ function _revolver_demo() {
 ###
 function _revolver() {
   # Get the context from the first parameter
-  local help version style ctx="$1"
+  local help version style invisible ctx="$1"
 
   # Parse CLI options
   zparseopts -D \
     h=help -help=help \
     v=version -version=version \
-    s:=style -style:=style
+    s:=style -style:=style \
+    i=invisible -hide-cursor=invisible
 
   # Output usage information and exit
   if [[ -n $help ]]; then
@@ -316,3 +329,5 @@ function _revolver() {
 }
 
 _revolver "$@"
+
+# vim:ft=zsh:et:sts=2:sw=2

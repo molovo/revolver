@@ -58,6 +58,19 @@ included spinner styles. Once you've found one you like, select it using the
 revolver --style 'bouncingBall' start 'The spinner message'
 ```
 
+## Hiding cursor
+
+You can hide the cursor during revolver operation, to do this pass option `-i`
+or `--hide-cursor` for the opening `revolver` invocation:
+
+```sh
+revolver -i start "Your awesome message"
+# OR
+revolver --hide-cursor start "Your awesome message"
+# ...
+# ...
+```
+
 ## License
 
 Copyright (c) 2016 James Dinsdale <hi@molovo.co> (molovo.co)
