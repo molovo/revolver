@@ -1,3 +1,22 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Revolver](#revolver)
+  - [Installation](#installation)
+    - [Zulu](#zulu)
+    - [zplug](#zplug)
+    - [zplugin](#zplugin)
+    - [Homebrew](#homebrew)
+    - [Manual](#manual)
+  - [Usage](#usage)
+  - [Styles](#styles)
+  - [Hiding cursor](#hiding-cursor)
+  - [License](#license)
+  - [Team](#team)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Revolver
 
 A progress spinner for ZSH scripts
@@ -18,6 +37,13 @@ zulu install revolver
 zplug "molovo/revolver", \
   as:command, \
   use:revolver
+```
+
+### zplugin
+
+```sh
+zplugin ice wait lucid as"command" pick"revolver"
+zplugin light revolver
 ```
 
 ### [Homebrew](http://brew.sh)
