@@ -55,7 +55,7 @@ included spinner styles. Once you've found one you like, select it using the
 `--style` option.
 
 ```sh
-revolver --style 'bouncingBall' 'The spinner message'
+revolver --style 'bouncingBall' start 'The spinner message'
 ```
 
 ## License
