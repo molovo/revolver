@@ -282,7 +282,7 @@ function _revolver() {
 
   # Output version information and exit
   if [[ -n $version ]]; then
-    echo '0.2.0'
+    echo '0.2.4'
     exit 0
   fi
 
